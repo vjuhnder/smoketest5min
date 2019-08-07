@@ -74,7 +74,7 @@ try
     p << new Stage('Building Sabine SRA', this)
         .addStep(new BuildSraStep(this))
     p << new Stage('Regression Testing', this)
-        .addStep(new RegressionX86Step(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
+        .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
     p.execute()
 
     srs_repo = null
