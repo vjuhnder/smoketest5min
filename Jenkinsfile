@@ -116,7 +116,7 @@ finally
             slackData.add(0, currentBuild.currentResult)
             slackData.add(1, (lastCommitUser.tokenize(":")[1]).trim())
             /* Use slackNotifier.groovy from shared library*/
-            slackNotifier(slackData as String[])
+            //slackNotifier(slackData as String[])
 
             echo "Build Naming - Current Build result : ${currentBuild.result}"
             echo "Build Naming - Current Build current result : ${currentBuild.currentResult}"
