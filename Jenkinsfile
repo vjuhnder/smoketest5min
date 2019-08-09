@@ -8,9 +8,6 @@ import com.uhnder.shared.*
 import com.uhnder.stages.*
 import com.uhnder.steps.*
 
-// def HIPCHAT = new HipchatSmokeTest(this)
-
-
 def SRS_REVISION_ID
 def SRA_REVISION_ID
 def SCC_REVISION_ID
@@ -31,7 +28,7 @@ try
 {
 
     def srs_repo  = new RepoUpdateStep(this, "system-radar-software", "https://bitbucket.org/uhnder/", params.SRS_CHANGESET)
-    def scc_repo = new RepoUpdateStep(this, "rcc", "https://bitbucket.org/uhnder/", "default")
+    //def scc_repo = new RepoUpdateStep(this, "rcc", "https://bitbucket.org/uhnder/", "default")
     def jenkins_repo = new RepoUpdateStep(this, "jenkins", "https://bitbucket.org/uhnder/", "default")
     def jrt_repo = new RepoUpdateStep(this, "jenkins-regression-tests", "https://bitbucket.org/uhnder/", "default")
     def sra_repo = new RepoUpdateStep(this, "radar-remote-api", "https://bitbucket.org/uhnder/", "default")
@@ -56,9 +53,9 @@ try
     def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
     manager.build.replaceAction(new ParametersAction(newCgParameter))
     
-    p << new Stage('RepoUpdateStep', this)
-        .addStep(scc_repo)
-    SCC_REVISION_ID = scc_repo.get_rev_id()
+    //p << new Stage('RepoUpdateStep', this)
+    //    .addStep(scc_repo)
+    //SCC_REVISION_ID = scc_repo.get_rev_id()
     p << new Stage('RepoUpdateStep', this)
         .addStep(jenkins_repo)
     p << new Stage('RepoUpdateStep', this)
@@ -73,7 +70,7 @@ try
         .addStep(new BuildSrsStep(this,SRS_REVISION_ID, path, "x86_linux", "sabineA", "gtest",""))
     p << new Stage('Building Sabine SRA', this)
         .addStep(new BuildSraStep(this))
-    p << new Stage('Regression Testing', this)
+    p << new Stage('Smoke Test', this)
         .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
     p.execute()
 
