@@ -84,17 +84,11 @@ try
     sra_repo = null
     sbu_s_repo = null
     rhal_exp_repo = null
-
-    echo "Exception - Current Build result : ${currentBuild.result}"
-    echo "Exception - Current Build current result : ${currentBuild.currentResult}"
 }
 catch (e)
 {
     echo 'The Pipeline failed :('
     currentBuild.result = "FAILURE"
-
-    echo "Exception - Current Build result : ${currentBuild.result}"
-    echo "Exception - Current Build current result : ${currentBuild.currentResult}"
     throw e
 }
 finally
@@ -117,10 +111,6 @@ finally
             slackData.add(1, (lastCommitUser.tokenize(":")[1]).trim())
             /* Use slackNotifier.groovy from shared library*/
             //slackNotifier(slackData as String[])
-
-            echo "Build Naming - Current Build result : ${currentBuild.result}"
-            echo "Build Naming - Current Build current result : ${currentBuild.currentResult}"
-
         }
     }
      if(manager.logContains(".*WIP FAILURES FOUND.*")) {
