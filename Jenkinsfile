@@ -9,10 +9,6 @@ import com.uhnder.stages.*
 import com.uhnder.steps.*
 
 def SRS_REVISION_ID
-def SRA_REVISION_ID
-def SCC_REVISION_ID
-def SBU_SHARED_REVISION_ID
-def slackData = []
 def srsRepoName = "system-radar-software"
 
 properties([
@@ -69,12 +65,10 @@ try
     manager.build.replaceAction(new ParametersAction(newCgParameter))    
      
     srs_repo = null
-    scc_repo = null
     jenkins_repo = null
     jrt_repo = null
     sra_repo = null
     sbu_s_repo = null
-    rhal_exp_repo = null
 }
 catch (e)
 {
@@ -89,14 +83,6 @@ finally
         node('master')
         {
             currentBuild.displayName = "#${BUILD_NUMBER}: SRS(${SRS_REVISION_ID})"
-
-            dir(srsRepoName)
-            {
-                lastCommitUser = sh (
-                    returnStdout: true,
-                    script: "hg parent | grep user "
-                    ).trim()
-            }
         }
     }
      if(manager.logContains(".*WIP FAILURES FOUND.*")) {
