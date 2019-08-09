@@ -9,6 +9,8 @@ import com.uhnder.stages.*
 import com.uhnder.steps.*
 
 def SRS_REVISION_ID
+def SBUS_REVISION_ID
+def SRA_REVISION_ID
 def srsRepoName = "system-radar-software"
 
 properties([
@@ -58,11 +60,14 @@ try
         .addStep(new BuildSraStep(this))
     p << new Stage('Smoke Test', this)
         .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
-    p.execute()
-
+    
+    SRA_REVISION_ID = sra_repo.get_rev_id()
+    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()
     SRS_REVISION_ID = srs_repo.get_rev_id()
     def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
     manager.build.replaceAction(new ParametersAction(newCgParameter))    
+    
+    p.execute()
      
     srs_repo = null
     jenkins_repo = null
