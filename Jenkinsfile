@@ -49,9 +49,7 @@ try
     def p = new Pipeline(this, 60)
     p << new Stage('RepoUpdateStep', this)
         .addStep(srs_repo)
-    SRS_REVISION_ID = srs_repo.get_rev_id()
-    def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
-    manager.build.replaceAction(new ParametersAction(newCgParameter))
+    
     
     //p << new Stage('RepoUpdateStep', this)
     //    .addStep(scc_repo)
@@ -61,11 +59,9 @@ try
     p << new Stage('RepoUpdateStep', this)
         .addStep(jrt_repo)
     p << new Stage('RepoUpdateStep', this)
-        .addStep(sra_repo)
-    SRA_REVISION_ID = sra_repo.get_rev_id()
+        .addStep(sra_repo)   
     p << new Stage('RepoUpdateStep', this)
-        .addStep(sbu_s_repo)
-    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()
+        .addStep(sbu_s_repo)    
     p << new Stage('Building Sabine', this)
         .addStep(new BuildSrsStep(this,SRS_REVISION_ID, path, "x86_linux", "sabineA", "gtest",""))
     p << new Stage('Building Sabine SRA', this)
@@ -74,6 +70,13 @@ try
         .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
     p.execute()
 
+    SRS_REVISION_ID = srs_repo.get_rev_id()
+    def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
+    manager.build.replaceAction(new ParametersAction(newCgParameter))
+    
+    SRA_REVISION_ID = sra_repo.get_rev_id()
+    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()
+    
     srs_repo = null
     scc_repo = null
     jenkins_repo = null
