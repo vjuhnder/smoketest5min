@@ -28,7 +28,6 @@ try
 {
 
     def srs_repo  = new RepoUpdateStep(this, "system-radar-software", "https://bitbucket.org/uhnder/", params.SRS_CHANGESET)
-    //def scc_repo = new RepoUpdateStep(this, "rcc", "https://bitbucket.org/uhnder/", "default")
     def jenkins_repo = new RepoUpdateStep(this, "jenkins", "https://bitbucket.org/uhnder/", "default")
     def jrt_repo = new RepoUpdateStep(this, "jenkins-regression-tests", "https://bitbucket.org/uhnder/", "default")
     def sra_repo = new RepoUpdateStep(this, "radar-remote-api", "https://bitbucket.org/uhnder/", "default")
@@ -49,11 +48,6 @@ try
     def p = new Pipeline(this, 60)
     p << new Stage('RepoUpdateStep', this)
         .addStep(srs_repo)
-    
-    
-    //p << new Stage('RepoUpdateStep', this)
-    //    .addStep(scc_repo)
-    //SCC_REVISION_ID = scc_repo.get_rev_id()
     p << new Stage('RepoUpdateStep', this)
         .addStep(jenkins_repo)
     p << new Stage('RepoUpdateStep', this)
@@ -72,11 +66,8 @@ try
 
     SRS_REVISION_ID = srs_repo.get_rev_id()
     def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
-    manager.build.replaceAction(new ParametersAction(newCgParameter))
-    
-    SRA_REVISION_ID = sra_repo.get_rev_id()
-    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()
-    
+    manager.build.replaceAction(new ParametersAction(newCgParameter))    
+     
     srs_repo = null
     scc_repo = null
     jenkins_repo = null
@@ -105,12 +96,7 @@ finally
                     returnStdout: true,
                     script: "hg parent | grep user "
                     ).trim()
-                echo lastCommitUser
             }
-            slackData.add(0, currentBuild.currentResult)
-            slackData.add(1, (lastCommitUser.tokenize(":")[1]).trim())
-            /* Use slackNotifier.groovy from shared library*/
-            //slackNotifier(slackData as String[])
         }
     }
      if(manager.logContains(".*WIP FAILURES FOUND.*")) {
