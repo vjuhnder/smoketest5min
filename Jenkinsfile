@@ -11,6 +11,7 @@ import com.uhnder.steps.*
 def SRS_REVISION_ID
 def SBUS_REVISION_ID
 def SRA_REVISION_ID
+def SCC_REVISION_ID
 def srsRepoName = "system-radar-software"
 
 properties([
@@ -54,18 +55,18 @@ try
         .addStep(sra_repo)   
     p << new Stage('RepoUpdateStep', this)
         .addStep(sbu_s_repo)    
+    SRS_REVISION_ID = srs_repo.get_rev_id()
     p << new Stage('Building Sabine', this)
         .addStep(new BuildSrsStep(this,SRS_REVISION_ID, path, "x86_linux", "sabineA", "gtest",""))
     p << new Stage('Building Sabine SRA', this)
         .addStep(new BuildSraStep(this))
+    SRA_REVISION_ID = sra_repo.get_rev_id()
+    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()    
+    SCC_REVISION_ID = scc_repo.get_rev_id()
+    def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
+    manager.build.replaceAction(new ParametersAction(newCgParameter)) 
     p << new Stage('Smoke Test', this)
         .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
-    
-    SRA_REVISION_ID = sra_repo.get_rev_id()
-    SBUS_REVISION_ID = sbu_s_repo.get_rev_id()
-    SRS_REVISION_ID = srs_repo.get_rev_id()
-    def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
-    manager.build.replaceAction(new ParametersAction(newCgParameter))    
     
     p.execute()
      
