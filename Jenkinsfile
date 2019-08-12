@@ -28,7 +28,7 @@ try
 {
 
     def srs_repo  = new RepoUpdateStep(this, "system-radar-software", "https://bitbucket.org/uhnder/", params.SRS_CHANGESET)
-    def jenkins_repo = new RepoUpdateStep(this, "jenkins", "https://bitbucket.org/uhnder/", "default")
+    //def jenkins_repo = new RepoUpdateStep(this, "jenkins", "https://bitbucket.org/uhnder/", "default")
     def jrt_repo = new RepoUpdateStep(this, "jenkins-regression-tests", "https://bitbucket.org/uhnder/", "default")
     def sra_repo = new RepoUpdateStep(this, "radar-remote-api", "https://bitbucket.org/uhnder/", "default")
     def sbu_s_repo = new RepoUpdateStep(this, "sbu-shared", "https://bitbucket.org/uhnder/", "default")
@@ -48,8 +48,8 @@ try
     def p = new Pipeline(this, 60)
     p << new Stage('RepoUpdateStep', this)
         .addStep(srs_repo)
-    p << new Stage('RepoUpdateStep', this)
-        .addStep(jenkins_repo)
+    //p << new Stage('RepoUpdateStep', this)
+    //    .addStep(jenkins_repo)
     p << new Stage('RepoUpdateStep', this)
         .addStep(jrt_repo)
     p << new Stage('RepoUpdateStep', this)
@@ -72,7 +72,7 @@ try
     p.execute()
      
     srs_repo = null
-    jenkins_repo = null
+    //jenkins_repo = null
     jrt_repo = null
     sra_repo = null
     sbu_s_repo = null
