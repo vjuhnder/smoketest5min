@@ -12,6 +12,7 @@ def SRS_REVISION_ID
 def SBUS_REVISION_ID
 def SRA_REVISION_ID
 def SCC_REVISION_ID
+def SBU_SHARED_REVISION_ID
 def srsRepoName = "system-radar-software"
 
 properties([
@@ -66,7 +67,7 @@ try
     def newCgParameter = new StringParameterValue('SRS_CHANGESET', SRS_REVISION_ID)
     manager.build.replaceAction(new ParametersAction(newCgParameter)) 
     p << new Stage('Smoke Test', this)
-        .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBU_SHARED_REVISION_ID, 'x86-smoketest'))
+        .addStep(new RegressionX86StepVJ(this,'../../../jenkins-regression-tests/regression-suites/linux-x86-scans', 'wherever', env.WORKSPACE, "${BUILD_URL}", SRS_REVISION_ID, SCC_REVISION_ID, SBUS_REVISION_ID, 'x86-smoketest'))
     
     p.execute()
      
