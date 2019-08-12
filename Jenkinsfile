@@ -31,7 +31,7 @@ try
     def jrt_repo = new RepoUpdateStep(this, "jenkins-regression-tests", "https://bitbucket.org/uhnder/", "default")
     def sra_repo = new RepoUpdateStep(this, "radar-remote-api", "https://bitbucket.org/uhnder/", "default")
     def sbu_s_repo = new RepoUpdateStep(this, "sbu-shared", "https://bitbucket.org/uhnder/", "default")
-
+    def scc_repo = new RepoUpdateStep(this, "rcc", "https://bitbucket.org/uhnder/", "default")
     def path
 
     node('master')
