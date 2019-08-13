@@ -20,8 +20,6 @@ properties([
         string( defaultValue: 'default',
                 description: 'Specify a changeset (hash) to checkout',
                 name: 'SRS_CHANGESET'),
-    ]),
-    parameters([
         string( defaultValue: 'default',
                 description: 'Regression test folder',
                 name: 'TEST_FOLDER'),
