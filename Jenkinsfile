@@ -20,7 +20,7 @@ properties([
         string( defaultValue: 'default',
                 description: 'Specify a changeset (hash) to checkout',
                 name: 'SRS_CHANGESET'),
-        string( defaultValue: 'default',
+        string( defaultValue: 'linux-x86-scans',
                 description: 'Regression test folder',
                 name: 'TEST_FOLDER'),
     ]),
